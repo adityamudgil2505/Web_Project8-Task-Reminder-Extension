@@ -15,7 +15,7 @@ $("ul").on("click","span",function(event){
 $("input").keypress(function(event){
   if(event.which===13)
   { var temp = $(this).val();
-    $("ul").append("<li><span class='trash'><i class='fa fa-trash'></i></span>"+temp+"</li>");
+    $("ul").prepend("<li><span class='trash'><i class='fa fa-trash'></i></span>"+temp+"</li>");
     $("input").val("");
   }
 });
