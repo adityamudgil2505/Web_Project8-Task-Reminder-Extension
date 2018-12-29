@@ -102,4 +102,5 @@ li:hover .trash{
 #add{
   float: right;
   color: white;
+  cursor: pointer;
 }
