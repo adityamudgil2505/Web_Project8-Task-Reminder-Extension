@@ -7,10 +7,10 @@ function intialize(){
     let len = arr.length;
     for(let i=len-1;i>=0;i--)
     { if(arr[i].done)
-      { elemUL.append("<li class='update'><span class='trash 'data-timeStamp='"+arr[i].timeStamp.toString()+"'><i class='fa fa-trash'></i></span>"+arr[i].task+"</li>");
+      { elemUL.append("<li class='update'><span class='trash 'data-timeStamp='"+arr[i].timeStamp.toString()+"'><i class='fa fa-trash'></i></span><span class='addedOn'>"+arr[i].currentTimeString+"</span><span class='endOn'>"+arr[i].endTimeString+"</span>"+arr[i].task+"</li>");
       }
       else
-      { elemUL.append("<li><span class='trash 'data-timeStamp='"+arr[i].timeStamp.toString()+"'><i class='fa fa-trash'></i></span>"+arr[i].task+"</li>");
+      { elemUL.append("<li><span class='trash 'data-timeStamp='"+arr[i].timeStamp.toString()+"'><i class='fa fa-trash'></i></span><span class='addedOn'>"+arr[i].currentTimeString+"</span><span class='endOn'>"+arr[i].endTimeString+"</span>"+arr[i].task+"</li>");
       }
     }
     console.log(arr);
@@ -64,25 +64,34 @@ function deleteFromStorage(timeStamp)
     });
   });
 }
-
+var endTime=0;
+// Calendar click event
+  $("#calendarInp").datepicker();
+  $("#calendarInp").change(function() {
+    var date = $(this).datepicker({ dateFormat: 'dd-mm-yyyy' });
+    endTime = new Date(date.val());
+    endTime = endTime.toString();
+});
 //Adding
 $("input").keypress(function(event){
   if(event.which===13)
   { var temp = $(this).val();
     var timeStamp = Math.floor(Date.now()/1000);
-    storeVal(temp, timeStamp);
-    $("ul").prepend("<li><span class='trash 'data-timeStamp='"+timeStamp.toString()+"'><i class='fa fa-trash'></i></span>"+temp+"</li>");
+    let currentTimeString = Date().slice(4,15);
+    let endTimeString = endTime.slice(4,15);
+    storeVal(temp, timeStamp, currentTimeString, endTimeString);
+    $("ul").prepend("<li><span class='trash 'data-timeStamp='"+timeStamp.toString()+"'><i class='fa fa-trash'></i></span><span class='addedOn'>"+currentTimeString+"</span><span class='endOn'>"+endTimeString+"</span>"+temp+"</li>");
     $("input").val("");
   }
 });
 
 //store value in chrome store
-function storeVal(val, timeStamp)
+function storeVal(val, timeStamp, currentTimeString, endTimeString)
 { chrome.storage.sync.get({arr:[]},(detail)=>{
     let temp = detail.arr;
     console.log('before');
     console.log(temp);
-    temp.push({timeStamp:timeStamp, task: val, done:0});
+    temp.push({timeStamp:timeStamp, task: val, done:0, currentTimeString:currentTimeString, endTimeString:endTimeString});
     chrome.storage.sync.set({arr:temp},()=>{
       console.log('after adding');
       console.log(detail.arr);
@@ -92,15 +101,16 @@ function storeVal(val, timeStamp)
 
 //AddFunctionality
 $("#add").click(function(){
-  $("input").fadeToggle(0,function(){
-    var className = $("#add i").attr('class');
-    if(className=="fa fa-plus")
-    { $("#add i").removeClass();
-      $("#add i").addClass('fa fa-minus');
-    }
-    else
-    { $("#add i").removeClass();
-      $("#add i").addClass('fa fa-plus');
-    }
-  })
+  let par = $(".inputDiv");
+  var className = $("#add i").attr('class');
+  if(className=="fa fa-plus")
+  { $("#add i").removeClass();
+    $("#add i").addClass('fa fa-minus');
+    par.show();
+  }
+  else
+  { $("#add i").removeClass();
+    $("#add i").addClass('fa fa-plus');
+    par.hide();
+  }
 });
