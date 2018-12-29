@@ -64,9 +64,15 @@ function deleteFromStorage(timeStamp)
     });
   });
 }
-var endTime=0;
+var endTime=new Date();
+endTime = endTime.toString();
 // Calendar click event
-  $("#calendarInp").datepicker();
+  $("#calendarInp").datepicker({
+    numberOfMonths: 1,
+    defaultDate: new Date(),
+    showButtonPanel: true,
+    minDate: 0
+  });
   $("#calendarInp").change(function() {
     var date = $(this).datepicker({ dateFormat: 'dd-mm-yyyy' });
     endTime = new Date(date.val());
