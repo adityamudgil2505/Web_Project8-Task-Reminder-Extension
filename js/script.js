@@ -65,7 +65,6 @@ function deleteFromStorage(timeStamp)
   });
 }
 var endTime=new Date();
-endTime = endTime.toString();
 // Calendar click event
   $("#calendarInp").datepicker({
     numberOfMonths: 1,
@@ -76,7 +75,7 @@ endTime = endTime.toString();
   $("#calendarInp").change(function() {
     var date = $(this).datepicker({ dateFormat: 'dd-mm-yyyy' });
     endTime = new Date(date.val());
-    endTime = endTime.toString();
+  //  console.log(typeof(endTime));
 });
 //Adding
 $("input").keypress(function(event){
@@ -84,20 +83,22 @@ $("input").keypress(function(event){
   { var temp = $(this).val();
     var timeStamp = Math.floor(Date.now()/1000);
     let currentTimeString = Date().slice(4,15);
+    let endTimeStamp = Number(endTime.getTime());
+    endTime = endTime.toString();
     let endTimeString = endTime.slice(4,15);
-    storeVal(temp, timeStamp, currentTimeString, endTimeString);
+    storeVal(temp, timeStamp, currentTimeString, endTimeString, endTimeStamp);
     $("ul").prepend("<li><span class='trash 'data-timeStamp='"+timeStamp.toString()+"'><i class='fa fa-trash'></i></span><span class='addedOn'>"+currentTimeString+"</span><span class='endOn'>"+endTimeString+"</span>"+temp+"</li>");
     $("input").val("");
   }
 });
 
 //store value in chrome store
-function storeVal(val, timeStamp, currentTimeString, endTimeString)
+function storeVal(val, timeStamp, currentTimeString, endTimeString, endTimeStamp)
 { chrome.storage.sync.get({arr:[]},(detail)=>{
     let temp = detail.arr;
     console.log('before');
     console.log(temp);
-    temp.push({timeStamp:timeStamp, task: val, done:0, currentTimeString:currentTimeString, endTimeString:endTimeString});
+    temp.push({timeStamp:timeStamp, endTimeStamp:endTimeStamp, task: val, done:0, currentTimeString:currentTimeString, endTimeString:endTimeString});
     chrome.storage.sync.set({arr:temp},()=>{
       console.log('after adding');
       console.log(detail.arr);
