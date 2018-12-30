@@ -1,6 +1,7 @@
 // for rich notifications
 chrome.runtime.onStartup.addListener()
 { notif();
+  updateBadge();
 }
 function notif()
 { chrome.storage.sync.get({arr:[]},(detail)=>{
@@ -39,5 +40,14 @@ function notif()
       notifOption.message =  taskString;
       chrome.notifications.create('limitNotif', notifOption);
     }
+  });
+}
+
+// setting badge value
+function updateBadge(){
+  chrome.storage.sync.get({arr:[]},(detail)=>{
+    let len = detail.arr.length;
+    chrome.browserAction.setBadgeText({text: len.toString()});
+    chrome.browserAction.setBadgeBackgroundColor({ color: "#178b7a"});
   });
 }
