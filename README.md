@@ -26,3 +26,8 @@ Other features are
 3. Turn on the Developer mode on the right top corner.
 4. Then click on "load unpacked". Now select the folder "Web_Project8-Task-Reminder-Extension-master".
 5. Enjoy the Extension
+
+### Screenshots
+![alt GamePlay01](https://github.com/adityamudgil2505/Web_Project8-Task-Reminder-Extension/blob/master/Screenshots/App001.png)
+![alt GamePlay01](https://github.com/adityamudgil2505/Web_Project8-Task-Reminder-Extension/blob/master/Screenshots/App002.png)
+![alt GamePlay01](https://github.com/adityamudgil2505/Web_Project8-Task-Reminder-Extension/blob/master/Screenshots/Notif.png)
